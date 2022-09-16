@@ -29,6 +29,9 @@ function App() {
 
   const addExpenseHandler = (expense) => {
     setExpenses((prevExpenses) => [expense, ...expenses]);
+
+  const addExpenseHandler = (expense) => {
+    expenses = [expense, ...expenses];
   };
 
   return (

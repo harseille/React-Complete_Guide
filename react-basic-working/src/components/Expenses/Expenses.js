@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Card from '../UI/Card';
+
 import ExpensesList from './ExpensesList';
 import ExpensesFilter from './ExpensesFilter';
 import ExpensesChart from './ExpensesChart';
@@ -18,6 +19,7 @@ const Expenses = (props) => {
   const filteredExpenses = expenses.filter(
     (expense) => expense.date.getFullYear() === +filteredYear
   );
+
 
   return (
     <>
