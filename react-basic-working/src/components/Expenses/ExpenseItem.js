@@ -1,19 +1,24 @@
+// import { useState } from 'react';
 import Card from '../UI/Card';
 import ExpenseDate from './ExpenseDate';
 import './ExpenseItem.css';
 
 const ExpenseItem = (props) => {
-  const { expenses } = props;
+  const { expense } = props;
 
-  return expenses.map(({ id, date, amount, title }) => (
-    <Card key={id} className="expense-item">
-      <ExpenseDate date={date} />
-      <div className="expense-item__description">
-        <h2>{title}</h2>
-        <div className="expense-item__price">${amount}</div>
-      </div>
-    </Card>
-  ));
+  // const [title, setTitle] = useState(expense.title);
+
+  return (
+    <li>
+      <Card className="expense-item">
+        <ExpenseDate date={expense.date} />
+        <div className="expense-item__description">
+          <h2>{expense.title}</h2>
+          <div className="expense-item__price">${expense.amount}</div>
+        </div>
+      </Card>
+    </li>
+  );
 };
 
 export default ExpenseItem;
