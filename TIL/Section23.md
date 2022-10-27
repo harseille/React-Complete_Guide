@@ -228,3 +228,82 @@ revalidate에는 숫자가 필요한데요 10이라고 한다면 이 숫자는 �
 ##### getServerSideProps()
 
 요청이 들어올 때마다 페이지를 다시 만들어야 할 때 -> 페이지를 동적으로 프리 제너레이트해야 한다.
+
+```ts
+export async function getServerSideProps(context) {
+  const req = context.req;
+  const res = context.res;
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS,
+    },
+  };
+}
+```
+
+단점: 요청이 들어올 때까지 페이지가 만들어지기 기다려야 한다.
+
+그러므로 항상 바뀌는 데이터가 없다면
+getStaticProps를 사용하는것이 낫다. HTML파일을 pre-generate하고 HTML 파일을 CDN에 저장하고 제공한다.
+이것이 데이터를 서버에서 다시 만들고 패치하는 것보다 빠르다.
+
+##### getStaticPaths()
+
+getStaticProps는 페이지가 빌드 프로세스 중에 pre-generate된다.
+dynamic page의 경우에는 모든 버전의 pre-generate가 필요하다는 뜻이다.
+
+그러므로 pre-generate 하지 않은 페이지에 접속하면 404 에러를 보게 된다.
+
+이 문제를 해결하기 위해 getStaticPaths()를 사용한다.
+
+getStaticPaths()는 모든 동적 세그먼트 벨류 있는 객체를 return한다. ex)`[meetupId]`
+
+fallback 키: NextJS에게 paths 배열의 모든 값이 지원되는 매개 변수를 저장 할지 유무를 선택
+true: paths가 지원 되지 않는 값은 NextJS가 생성, 빈페이지를 즉시 반환하고 동적으로 생성된 콘텐츠를 풀다운
+false: paths에게 지원 되는 값만 포함, 아니면 404에러
+blocking: 페이지가 미리 생성될 때까지 사용자는 아무것도 볼 수 없고 완성된 페이지가 제공
+
+```ts
+export async function getStaticPaths() {
+  return {
+    fallback: false,
+    paths: [
+      {
+        params: {
+          meetupId: 'm1',
+        },
+      },
+      {
+        params: {
+          meetupId: 'm2',
+        },
+      },
+    ],
+  };
+}
+```
+
+## deploy
+
+검색엔진에 중요한 meta tag description을 설정 해야한다.
+
+```ts
+import Head from 'next/head';
+```
+
+```ts
+const HomePage = (props) => {
+  return (
+    <>
+      <Head>
+        <title>React Meetups</title>
+        <meta
+          name="description"
+          content="React 밋업: Browse a huge list of highly active React meetups!"
+        />
+      </Head>
+      <MeetupList meetups={props.meetups} />
+    </>
+  );
+};
+```
