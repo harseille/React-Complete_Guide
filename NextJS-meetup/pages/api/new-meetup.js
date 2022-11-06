@@ -10,9 +10,7 @@ const handler = async (req, res) => {
     // const { title, image, address, description } = data;
 
     // Connect to MongoDB server
-    const client = await MongoClient.connect(
-      'mongodb+srv://joonhabaak:9rpAKJZFWcDrLF6s@cluster0.rfkrpzi.mongodb.net/meetups?retryWrites=true&w=majority'
-    );
+    const client = await MongoClient.connect();
     /**
      * Create a new Db instance sharing the current socket connections.
      *
